@@ -16,12 +16,18 @@
     <ClInclude Include="Memory.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileIO.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Memory.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
