@@ -7,8 +7,12 @@
 
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
+	render::CreateWindow("CSC196", 800, 600);
+	cin.get(); // pause
+
+
 	kiko::g_memoryTracker.DisplayInfo();
 	int* p = new int;
 	kiko::g_memoryTracker.DisplayInfo();
