@@ -9,34 +9,22 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	render::CreateWindow("CSC196", 800, 600);
-	cin.get(); // pause
+	kiko::Renderer renderer;
+	renderer.Initialize();
+	renderer.CreateWindow("CSC195", 800, 600);
 
-
-	kiko::g_memoryTracker.DisplayInfo();
-	int* p = new int;
-	kiko::g_memoryTracker.DisplayInfo();
-	delete p;
-	kiko::g_memoryTracker.DisplayInfo();
-
-	kiko::Time timer;
-	for (int i = 0; i < 100000; i++) {}
-	cout << timer.GetElapsedSeconds() << endl;
-
-	/*cout << kiko::getFilePath() << endl;
-	kiko::setFilePath("Assets");
-	cout << kiko::getFilePath() << endl;
-	size_t size;
-	kiko::getFileSize("game.txt", size);
-	cout << size << endl;
-
-	std::string s;
-	kiko::readFile("game.txt", s);
-	cout << s << endl;
-
-	kiko::seed_random((unsigned int)time(nullptr));
-	for (int i = 0; i < 10; i++)
+	while (true)
 	{
-		cout << kiko::random(5, 10) << endl;
-	}*/
+		renderer.SetColor(0, 0, 0, 0);
+		renderer.BeginFrame();
+		//draw
+		for (int i = 0; i < 1000; i++) {
+			renderer.SetColor(kiko::random(256), kiko::random(256), kiko::random(256), 255);
+			renderer.DrawPoint(kiko::random(renderer.GetWidth()), kiko::random(renderer.GetHeight()));
+			renderer.DrawLine(kiko::random(renderer.GetWidth()), kiko::random(renderer.GetHeight()), kiko::random(renderer.GetWidth()), kiko::random(renderer.GetHeight()));
+			renderer.EndFrame();
+		}
+	}
+
+	return 0;
 }
