@@ -1,5 +1,6 @@
 #include "Core/Core.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/Model.h"
 #include <iostream>
 #include <vector>
 
@@ -35,6 +36,13 @@ int main(int argc, char* argv[])
 	renderer.Initialize();
 	renderer.CreateWindow("CSC195", 800, 600);
 
+
+	std::vector<kiko::vec2> points{ { 10, 0 }, { 5, 5 }, { 0, -5 }, { 10, 0 } };
+	kiko::Model model{ points };
+
+	kiko::vec2 v{5, 5};
+	v.Normalize();
+
 	vector<Star> stars;
 	for (int i = 0; i < 1000; i++)
 	{
@@ -59,12 +67,8 @@ int main(int argc, char* argv[])
 			renderer.DrawPoint(star.m_pos.x, star.m_pos.y);
 		}
 
-		/*for (int i = 0; i < 1000; i++) {
-			kiko::Vector2 pos(kiko::random(renderer.GetWidth(), renderer.GetHeight()));
+		model.Draw(renderer, { 400, 300 }, 3);
 
-			renderer.SetColor(kiko::random(256), kiko::random(256), kiko::random(256), 255);
-			renderer.DrawPoint(pos.x, pos.y);
-		}*/
 		renderer.EndFrame();
 	}
 
