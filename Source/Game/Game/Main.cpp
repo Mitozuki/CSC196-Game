@@ -1,6 +1,7 @@
 #include "Core/Core.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Model.h"
+#include "Input/InputSystem.h"
 #include <iostream>
 #include <vector>
 
@@ -36,6 +37,9 @@ int main(int argc, char* argv[])
 	renderer.Initialize();
 	renderer.CreateWindow("CSC195", 800, 600);
 
+	kiko::InputSystem inputSystem;
+	inputSystem.Initialize();
+
 
 	std::vector<kiko::vec2> points{ { 10, 0 }, { 5, 5 }, { 0, -5 }, { 10, 0 } };
 	kiko::Model model{ points };
@@ -52,8 +56,27 @@ int main(int argc, char* argv[])
 		stars.push_back(Star(pos, vel));
 	}
 
-	while (true)
+	bool quit = false;
+	while (!quit)
 	{
+		inputSystem.Update();
+		if (inputSystem.GetKeyDown(SDL_SCANCODE_ESCAPE))
+		{
+			quit = true;
+		}
+		if (inputSystem.GetMouseButtonDown(0))
+		{
+			cout << "mouse pressed " << inputSystem.GetMousePreviousButtonDown(0) << endl;
+		}
+		else if (inputSystem.GetMouseButtonDown(1))
+		{
+			cout << "mouse pressed " << inputSystem.GetMousePreviousButtonDown(1) << endl;
+		}
+		else if (inputSystem.GetMouseButtonDown(2))
+		{
+			cout << "mouse pressed " << inputSystem.GetMousePreviousButtonDown(2) << endl;
+		}
+
 		renderer.SetColor(0, 0, 0, 0);
 		renderer.BeginFrame();
 		//draw
