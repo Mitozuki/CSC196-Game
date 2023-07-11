@@ -66,15 +66,15 @@ int main(int argc, char* argv[])
 		}
 		if (inputSystem.GetMouseButtonDown(0))
 		{
-			cout << "mouse pressed " << inputSystem.GetMousePreviousButtonDown(0) << endl;
+			cout << "left mouse pressed " << endl;
 		}
-		else if (inputSystem.GetMouseButtonDown(1))
+		if (inputSystem.GetMouseButtonDown(1))
 		{
-			cout << "mouse pressed " << inputSystem.GetMousePreviousButtonDown(1) << endl;
+			cout << "middle mouse pressed " << endl;
 		}
-		else if (inputSystem.GetMouseButtonDown(2))
+		 if (inputSystem.GetMouseButtonDown(2))
 		{
-			cout << "mouse pressed " << inputSystem.GetMousePreviousButtonDown(2) << endl;
+			cout << "right mouse pressed " << endl;
 		}
 
 		renderer.SetColor(0, 0, 0, 0);

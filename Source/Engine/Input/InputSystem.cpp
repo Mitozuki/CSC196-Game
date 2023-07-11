@@ -43,7 +43,7 @@ namespace kiko
 
         m_prevMouseButtonState = m_mouseButtonState;
         m_mouseButtonState[0] = buttons & SDL_BUTTON_LMASK; // buttons [0001] &i [ORML]
-        m_mouseButtonState[1] = buttons & SDL_BUTTON_LMASK; // buttons [0010] &i [ORML]
-        m_mouseButtonState[2] = buttons & SDL_BUTTON_LMASK; // buttons [0100] &i [ORML]
+        m_mouseButtonState[1] = buttons & SDL_BUTTON_MMASK; // buttons [0010] &i [ORML]
+        m_mouseButtonState[2] = buttons & SDL_BUTTON_RMASK; // buttons [0100] &i [ORML]
     }
 }
