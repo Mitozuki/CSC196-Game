@@ -60,6 +60,7 @@ int main(int argc, char* argv[])
 	while (!quit)
 	{
 		inputSystem.Update();
+		cout << inputSystem.GetMousePosition().x << " " << inputSystem.GetMousePosition().y << endl;
 		if (inputSystem.GetKeyDown(SDL_SCANCODE_ESCAPE))
 		{
 			quit = true;
