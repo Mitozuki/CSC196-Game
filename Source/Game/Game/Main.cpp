@@ -32,6 +32,8 @@ public:
 
 int main(int argc, char* argv[])
 {
+	//constexpr float a = kiko::DegreesToRad(180);
+
 	kiko::seed_random((unsigned int)time(nullptr));
 	kiko::setFilePath("Assets");
 
@@ -59,8 +61,11 @@ int main(int argc, char* argv[])
 		stars.push_back(Star(pos, vel));
 	}
 
+	kiko::Transform transform{ { 400, 300 }, 0, 3 };
+
 	kiko::vec2 position{ 400, 300 };
 	float speed = 100;
+	float turnRate = kiko::DegreesToRad(180);
 
 	// main game loop
 	bool quit = false;
@@ -74,13 +79,27 @@ int main(int argc, char* argv[])
 			quit = true;
 		}
 
-		kiko::vec2 direction;
-		if (inputSystem.GetKeyDown(SDL_SCANCODE_W)) direction.y = -1;
-		if(inputSystem.GetKeyDown(SDL_SCANCODE_A)) direction.x = -1;
-		if(inputSystem.GetKeyDown(SDL_SCANCODE_S)) direction.y = 1;
-		if(inputSystem.GetKeyDown(SDL_SCANCODE_D)) direction.x = 1;
+		float rotate = 0;
+		if(inputSystem.GetKeyDown(SDL_SCANCODE_A)) rotate = -1;
+		if(inputSystem.GetKeyDown(SDL_SCANCODE_D)) rotate = 1;
+		transform.rotation += rotate * turnRate * kiko::g_time.GetDeltaTime();
 
-		position += direction * speed * kiko::g_time.GetDeltaTime();
+		float thrust = 0;
+		if (inputSystem.GetKeyDown(SDL_SCANCODE_W)) thrust = 1;
+
+		kiko::vec2 foward = kiko::vec2{ 0, -1 }.Rotate(transform.rotation);
+		transform.position += foward * speed * thrust * kiko::g_time.GetDeltaTime();
+		transform.position.x = kiko::Wrap(transform.position.x, renderer.GetWidth());
+		transform.position.y = kiko::Wrap(transform.position.y, renderer.GetHeight());
+
+
+		//kiko::vec2 direction;
+		//if (inputSystem.GetKeyDown(SDL_SCANCODE_W)) direction.y = -1;
+		//if(inputSystem.GetKeyDown(SDL_SCANCODE_A)) direction.x = -1;
+		//if(inputSystem.GetKeyDown(SDL_SCANCODE_S)) direction.y = 1;
+		//if(inputSystem.GetKeyDown(SDL_SCANCODE_D)) direction.x = 1;
+
+		//position += direction * speed * kiko::g_time.GetDeltaTime();
 
 		if (inputSystem.GetMouseButtonDown(0))
 		{
@@ -108,7 +127,7 @@ int main(int argc, char* argv[])
 			renderer.DrawPoint(star.m_pos.x, star.m_pos.y);
 		}
 
-		model.Draw(renderer, position, 3);
+		model.Draw(renderer, transform.position, transform.rotation, transform.scale);
 
 		renderer.EndFrame();
 
