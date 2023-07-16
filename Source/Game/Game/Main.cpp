@@ -2,6 +2,7 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Model.h"
 #include "Input/InputSystem.h"
+#include "Audio/AudioSystem.h"
 #include "Player.h"
 #include "Enemy.h"
 
@@ -35,6 +36,7 @@ public:
 
 int main(int argc, char* argv[])
 {
+
 	auto m1 = kiko::Max(4.0f, 3.0f);
 	auto m2 = kiko::Max(4, 3);
 
@@ -46,6 +48,9 @@ int main(int argc, char* argv[])
 	kiko::g_renderer.Initialize();
 	kiko::g_renderer.CreateWindow("CSC195", 800, 600);
 
+	kiko::AudioSystem audio;
+	audio.Initialize();
+	audio.AddAudio("jump", "Jump.wav");
 	
 	kiko::g_inputSystem.Initialize();
 
@@ -85,6 +90,7 @@ int main(int argc, char* argv[])
 	{
 		kiko::g_time.Tick();
 		kiko::g_inputSystem.Update();
+		audio.Update();
 		cout << kiko::g_inputSystem.GetMousePosition().x << " " << kiko::g_inputSystem.GetMousePosition().y << endl;
 		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_ESCAPE))
 		{
@@ -133,6 +139,11 @@ int main(int argc, char* argv[])
 
 		player.Draw(kiko::g_renderer);
 		for (auto& enemy : enemies) enemy.Draw(kiko::g_renderer);
+
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
+		{
+			audio.PlayOneShot("jump");
+		}
 
 		kiko::g_renderer.EndFrame();
 
