@@ -3,6 +3,7 @@
 #include "Renderer/Model.h"
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
+#include "Framework/Scene.h"
 #include "Player.h"
 #include "Enemy.h"
 
@@ -48,9 +49,8 @@ int main(int argc, char* argv[])
 	kiko::g_renderer.Initialize();
 	kiko::g_renderer.CreateWindow("CSC195", 800, 600);
 
-	kiko::AudioSystem audio;
-	audio.Initialize();
-	audio.AddAudio("jump", "Jump.wav");
+	kiko::g_audioSystem.Initialize();
+	kiko::g_audioSystem.AddAudio("jump", "Jump.wav");
 	
 	kiko::g_inputSystem.Initialize();
 
@@ -75,13 +75,14 @@ int main(int argc, char* argv[])
 	float speed = 100;
 	constexpr float turnRate = kiko::DegreesToRad(180);
 
-	Player player{speed, turnRate, { { 400, 300 }, 0, 3 }, model };
+	kiko::Scene scene;
+
+	scene.Add(new Player{ speed, turnRate, { { 400, 300 }, 0, 3 }, model });
 	
-	std::vector<Enemy> enemies;
 	for (int i = 0; i < 10; i++)
 	{
-		Enemy enemy{300, turnRate, { { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::twoPi), 3}, model};
-		enemies.push_back(enemy);
+		Enemy* enemy = new Enemy{300, turnRate, { { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::twoPi), 3}, model};
+		scene.Add(enemy);
 	}
 
 	// main game loop
@@ -90,7 +91,7 @@ int main(int argc, char* argv[])
 	{
 		kiko::g_time.Tick();
 		kiko::g_inputSystem.Update();
-		audio.Update();
+		kiko::g_audioSystem.Update();
 		cout << kiko::g_inputSystem.GetMousePosition().x << " " << kiko::g_inputSystem.GetMousePosition().y << endl;
 		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_ESCAPE))
 		{
@@ -98,8 +99,7 @@ int main(int argc, char* argv[])
 		}
 
 		//update
-		player.Update(kiko::g_time.GetDeltaTime());
-		for (auto& enemy : enemies) enemy.Update(kiko::g_time.GetDeltaTime());
+		scene.Update(kiko::g_time.GetDeltaTime());
 		//draw
 
 
@@ -137,13 +137,12 @@ int main(int argc, char* argv[])
 			kiko::g_renderer.DrawPoint(star.m_pos.x, star.m_pos.y);
 		}
 
-		player.Draw(kiko::g_renderer);
-		for (auto& enemy : enemies) enemy.Draw(kiko::g_renderer);
-
 		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
 		{
-			audio.PlayOneShot("jump");
+			kiko::g_audioSystem.PlayOneShot("jump");
 		}
+
+		scene.Draw(kiko::g_renderer);
 
 		kiko::g_renderer.EndFrame();
 

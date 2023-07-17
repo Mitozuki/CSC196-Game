@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "Weapon.h"
+#include "Framework/Scene.h"
 #include "Input/InputSystem.h"
 #include "Renderer/Renderer.h"
 
@@ -16,4 +18,11 @@ void Player::Update(float dt)
 	m_transform.position += foward * m_speed * thrust * kiko::g_time.GetDeltaTime();
 	m_transform.position.x = kiko::Wrap(m_transform.position.x, (float)kiko::g_renderer.GetWidth());
 	m_transform.position.y = kiko::Wrap(m_transform.position.y, (float)kiko::g_renderer.GetHeight());
+
+	if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE))
+	{
+		kiko::Transform transform{ m_transform.position, m_transform.rotation, m_transform.scale };
+		Weapon* weapon = new Weapon{ 400, transform, m_model };
+		m_scene->Add(weapon);
+	}
 }
