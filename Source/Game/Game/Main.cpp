@@ -37,6 +37,9 @@ public:
 
 int main(int argc, char* argv[])
 {
+	std::unique_ptr<int> up = std::make_unique<int>(10);
+
+	kiko::g_memoryTracker.DisplayInfo();
 
 	auto m1 = kiko::Max(4.0f, 3.0f);
 	auto m2 = kiko::Max(4, 3);
@@ -77,12 +80,14 @@ int main(int argc, char* argv[])
 
 	kiko::Scene scene;
 
-	scene.Add(new Player{ speed, turnRate, { { 400, 300 }, 0, 3 }, model });
+	unique_ptr<Player> player = make_unique<Player>((float)speed, (float)turnRate, kiko::Transform{ { 400, 300 }, 0, 3 }, model);
+	scene.Add(std::move(player));
 	
+
 	for (int i = 0; i < 10; i++)
 	{
-		Enemy* enemy = new Enemy{300, turnRate, { { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::twoPi), 3}, model};
-		scene.Add(enemy);
+		unique_ptr<Enemy> enemy = make_unique<Enemy>(300.0f, (float)turnRate, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::twoPi), 3}, model);
+		scene.Add(std::move(enemy));
 	}
 
 	// main game loop
@@ -148,6 +153,10 @@ int main(int argc, char* argv[])
 
 		//this_thread::sleep_for(chrono::milliseconds(100));
 	}
+
+	stars.clear();
+	scene.RemoveAll();
+	kiko::g_memoryTracker.DisplayInfo();
 
 	return 0;
 }

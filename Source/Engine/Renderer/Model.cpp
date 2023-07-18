@@ -10,9 +10,14 @@ namespace kiko
 
 		std::istringstream stream(buffer);
 
+		// read color
+		stream >> m_color;
+
+		// read number of points
 		std::string line;
 		std::getline(stream, line);
 
+		// read vector2 points
 		int numPoints = std::stoi(line);
 		for (int i = 0; i < numPoints; i++)
 		{
@@ -29,6 +34,7 @@ namespace kiko
 	{
 		if (m_points.empty()) return;
 
+		renderer.SetColor( Color::toInt(m_color.r), Color::toInt(m_color.r), Color::toInt(m_color.g), Color::toInt(m_color.b) );
 		for (int i = 0; i < m_points.size() - 1 ; i++)
 		{
 			vec2 p1 = (m_points[i] * scale).Rotate(rotation) + position;

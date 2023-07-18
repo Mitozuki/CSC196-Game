@@ -22,7 +22,7 @@ void Player::Update(float dt)
 	if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE))
 	{
 		kiko::Transform transform{ m_transform.position, m_transform.rotation, m_transform.scale };
-		Weapon* weapon = new Weapon{ 400, transform, m_model };
-		m_scene->Add(weapon);
+		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>( 400.0f, transform, m_model );
+		m_scene->Add(std::move(weapon));
 	}
 }
