@@ -19,7 +19,7 @@ void Player::Update(float dt)
 	m_transform.position.x = kiko::Wrap(m_transform.position.x, (float)kiko::g_renderer.GetWidth());
 	m_transform.position.y = kiko::Wrap(m_transform.position.y, (float)kiko::g_renderer.GetHeight());
 
-	if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE))
+	if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE))
 	{
 		kiko::Transform transform{ m_transform.position, m_transform.rotation, m_transform.scale };
 		Weapon* weapon = new Weapon{ 400, transform, m_model };

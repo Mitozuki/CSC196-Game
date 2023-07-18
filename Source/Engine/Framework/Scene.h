@@ -19,6 +19,6 @@ namespace kiko
 		void RemoveAll();
 
 	private:
-		std::list<Actor> m_actors;
+		std::list<Actor*> m_actors;
 	};
 }
