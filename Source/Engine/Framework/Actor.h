@@ -13,14 +13,17 @@ namespace kiko
 			m_model{ model }
 		{}
 
-		virtual void Update(float dt) = 0;
+		virtual void Update(float dt);
 		virtual void Draw(kiko::Renderer& renderer);
 
 		friend class Scene;
 		class Scene* m_scene = nullptr;
 
-	protected:
 		kiko::Transform m_transform;
+	protected:
+		bool m_destroyed = false;
+		float m_lifespan = -1.0f;
+
 		kiko::Model m_model;
 	};
 }

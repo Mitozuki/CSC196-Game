@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 {
 	std::unique_ptr<int> up = std::make_unique<int>(10);
 
-	kiko::g_memoryTracker.DisplayInfo();
+	kiko::MemoryTracker::Initialize();
 
 	auto m1 = kiko::Max(4.0f, 3.0f);
 	auto m2 = kiko::Max(4, 3);
@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < 10; i++)
 	{
-		unique_ptr<Enemy> enemy = make_unique<Enemy>(300.0f, (float)turnRate, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::twoPi), 3}, model);
+		unique_ptr<Enemy> enemy = make_unique<Enemy>(kiko::randomf(75.0f, 150.0f), (float)turnRate, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::twoPi), 3}, model);
 		scene.Add(std::move(enemy));
 	}
 
@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
 
 	stars.clear();
 	scene.RemoveAll();
-	kiko::g_memoryTracker.DisplayInfo();
+	//kiko::g_memoryTracker.DisplayInfo(); does not exist anymore
 
 	return 0;
 }
