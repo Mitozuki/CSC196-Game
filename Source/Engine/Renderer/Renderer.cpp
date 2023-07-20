@@ -16,6 +16,7 @@ namespace kiko
 	{
 		SDL_DestroyRenderer(m_renderer);
 		SDL_DestroyWindow(m_window);
+		TTF_Quit();
 	}
 	void Renderer::CreateWindow(const std::string& title, int width, int height)
 	{

@@ -4,6 +4,8 @@
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
 #include "Framework/Scene.h"
+#include "Renderer/Text.h"
+#include "Renderer/Font.h"
 #include "Player.h"
 #include "Enemy.h"
 
@@ -56,6 +58,11 @@ int main(int argc, char* argv[])
 	kiko::g_audioSystem.AddAudio("jump", "Jump.wav");
 	
 	kiko::g_inputSystem.Initialize();
+
+	std::shared_ptr<kiko::Font> font = std::make_shared<kiko::Font>("Vendetta.ttf", 24);
+
+	std::unique_ptr<kiko::Text> text = std::make_unique<kiko::Text>(font);
+	text->Create(kiko::g_renderer, "NEUMONT", kiko::Color{ 1, 0, 1, 1 });
 
 	kiko::Model model;
 	model.Load("star.txt");
@@ -148,6 +155,8 @@ int main(int argc, char* argv[])
 		}
 
 		scene.Draw(kiko::g_renderer);
+
+		text->Draw(kiko::g_renderer, 400, 300);
 
 		kiko::g_renderer.EndFrame();
 
