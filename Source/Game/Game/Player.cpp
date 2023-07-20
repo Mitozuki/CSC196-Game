@@ -25,6 +25,12 @@ void Player::Update(float dt)
 	{
 		kiko::Transform transform{ m_transform.position, m_transform.rotation, m_transform.scale };
 		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>( 400.0f, transform, m_model );
+		weapon->m_tag = "Player";
 		m_scene->Add(std::move(weapon));
 	}
+}
+
+void Player::OnCollision(Actor* other)
+{
+	if (other->m_tag == "Enemy") m_destroyed = true;
 }

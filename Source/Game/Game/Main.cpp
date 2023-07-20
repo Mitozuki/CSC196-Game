@@ -1,6 +1,6 @@
 #include "Core/Core.h"
 #include "Renderer/Renderer.h"
-#include "Renderer/Model.h"
+#include "Renderer/ModelManager.h"
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
 #include "Framework/Scene.h"
@@ -64,8 +64,6 @@ int main(int argc, char* argv[])
 	std::unique_ptr<kiko::Text> text = std::make_unique<kiko::Text>(font);
 	text->Create(kiko::g_renderer, "NEUMONT", kiko::Color{ 1, 0, 1, 1 });
 
-	kiko::Model model;
-	model.Load("star.txt");
 
 	kiko::vec2 v{5, 5};
 	v.Normalize();
@@ -87,13 +85,14 @@ int main(int argc, char* argv[])
 
 	kiko::Scene scene;
 
-	unique_ptr<Player> player = make_unique<Player>((float)speed, (float)turnRate, kiko::Transform{ { 400, 300 }, 0, 3 }, model);
+	unique_ptr<Player> player = make_unique<Player>((float)speed, (float)turnRate, kiko::Transform{ { 400, 300 }, 0, 3 }, kiko::g_manager.Get("star.txt"));
+	player->m_tag = "Player";
 	scene.Add(std::move(player));
-	
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 1; i++)
 	{
-		unique_ptr<Enemy> enemy = make_unique<Enemy>(kiko::randomf(75.0f, 150.0f), (float)turnRate, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::twoPi), 3}, model);
+		unique_ptr<Enemy> enemy = make_unique<Enemy>(kiko::randomf(75.0f, 150.0f), (float)turnRate, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::twoPi), 3}, kiko::g_manager.Get("star.txt"));
+		enemy->m_tag = "Enemy";
 		scene.Add(std::move(enemy));
 	}
 
@@ -104,7 +103,7 @@ int main(int argc, char* argv[])
 		kiko::g_time.Tick();
 		kiko::g_inputSystem.Update();
 		kiko::g_audioSystem.Update();
-		cout << kiko::g_inputSystem.GetMousePosition().x << " " << kiko::g_inputSystem.GetMousePosition().y << endl;
+		//cout << kiko::g_inputSystem.GetMousePosition().x << " " << kiko::g_inputSystem.GetMousePosition().y << endl;
 		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_ESCAPE))
 		{
 			quit = true;
@@ -156,7 +155,7 @@ int main(int argc, char* argv[])
 
 		scene.Draw(kiko::g_renderer);
 
-		text->Draw(kiko::g_renderer, 400, 300);
+		//text->Draw(kiko::g_renderer, 400, 300);
 
 		kiko::g_renderer.EndFrame();
 

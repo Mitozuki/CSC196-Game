@@ -4,7 +4,7 @@
 class Weapon : public kiko::Actor
 {
 public:
-	Weapon(float speed, const kiko::Transform transform, const kiko::Model model) :
+	Weapon(float speed, const kiko::Transform transform, std::shared_ptr<kiko::Model> model) :
 		Actor{ transform, model },
 		m_speed{ speed }
 	{
@@ -12,6 +12,7 @@ public:
 	}
 
 	void Update(float dt) override;
+	void OnCollision(Actor* other) override;
 
 private:
 	float m_speed = 0;

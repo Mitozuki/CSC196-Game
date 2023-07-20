@@ -29,7 +29,7 @@ namespace kiko
 	template <typename T>
 	inline T Min(T a, T b)
 	{
-		return (a < b) ? b : a;
+		return (a > b) ? b : a;
 	}
 
 	template <typename T>
