@@ -13,12 +13,18 @@
     <ClCompile Include="Model.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
