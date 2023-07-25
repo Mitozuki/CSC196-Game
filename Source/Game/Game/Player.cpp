@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Weapon.h"
+#include "SpaceGame.h"
 #include "Framework/Scene.h"
 #include "Input/InputSystem.h"
 #include "Renderer/Renderer.h"
@@ -32,5 +33,10 @@ void Player::Update(float dt)
 
 void Player::OnCollision(Actor* other)
 {
-	if (other->m_tag == "Enemy") m_destroyed = true;
+	if (other->m_tag == "Enemy")
+	{
+		m_game->SetLives(m_game->GetLives() - 1);
+		dynamic_cast<SpaceGame*>(m_game)->setState(SpaceGame::eState::PlayerDead);
+		m_destroyed = true;
+	}
 }

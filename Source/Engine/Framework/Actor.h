@@ -22,6 +22,7 @@ namespace kiko
 
 		friend class Scene;
 		class Scene* m_scene = nullptr;
+		class Game* m_game;
 
 		kiko::Transform m_transform;
 		std::string m_tag;

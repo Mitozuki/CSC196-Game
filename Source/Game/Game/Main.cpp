@@ -9,6 +9,8 @@
 #include "Player.h"
 #include "Enemy.h"
 
+#include "SpaceGame.h"
+
 #include <iostream>
 #include <vector>
 #include <thread>
@@ -55,14 +57,10 @@ int main(int argc, char* argv[])
 	kiko::g_renderer.CreateWindow("CSC195", 800, 600);
 
 	kiko::g_audioSystem.Initialize();
-	kiko::g_audioSystem.AddAudio("jump", "Jump.wav");
-	
 	kiko::g_inputSystem.Initialize();
 
-	std::shared_ptr<kiko::Font> font = std::make_shared<kiko::Font>("Vendetta.ttf", 24);
-
-	std::unique_ptr<kiko::Text> text = std::make_unique<kiko::Text>(font);
-	text->Create(kiko::g_renderer, "NEUMONT", kiko::Color{ 1, 0, 1, 1 });
+	unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
+	game->Initialize();
 
 
 	kiko::vec2 v{5, 5};
@@ -83,18 +81,7 @@ int main(int argc, char* argv[])
 	float speed = 100;
 	constexpr float turnRate = kiko::DegreesToRad(180);
 
-	kiko::Scene scene;
-
-	unique_ptr<Player> player = make_unique<Player>((float)speed, (float)turnRate, kiko::Transform{ { 400, 300 }, 0, 3 }, kiko::g_manager.Get("star.txt"));
-	player->m_tag = "Player";
-	scene.Add(std::move(player));
-
-	for (int i = 0; i < 1; i++)
-	{
-		unique_ptr<Enemy> enemy = make_unique<Enemy>(kiko::randomf(75.0f, 150.0f), (float)turnRate, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::twoPi), 3}, kiko::g_manager.Get("star.txt"));
-		enemy->m_tag = "Enemy";
-		scene.Add(std::move(enemy));
-	}
+	
 
 	// main game loop
 	bool quit = false;
@@ -110,7 +97,7 @@ int main(int argc, char* argv[])
 		}
 
 		//update
-		scene.Update(kiko::g_time.GetDeltaTime());
+		game->Update(kiko::g_time.GetDeltaTime());
 		//draw
 
 
@@ -153,7 +140,7 @@ int main(int argc, char* argv[])
 			kiko::g_audioSystem.PlayOneShot("jump");
 		}
 
-		scene.Draw(kiko::g_renderer);
+		game->Draw(kiko::g_renderer);
 
 		//text->Draw(kiko::g_renderer, 400, 300);
 
@@ -163,7 +150,7 @@ int main(int argc, char* argv[])
 	}
 
 	stars.clear();
-	scene.RemoveAll();
+	//scene.RemoveAll();
 	//kiko::g_memoryTracker.DisplayInfo(); does not exist anymore
 
 	return 0;
