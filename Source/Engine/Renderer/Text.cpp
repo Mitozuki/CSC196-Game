@@ -9,6 +9,8 @@ namespace kiko
 	}
 	void Text::Create(Renderer& renderer, const std::string& text, const Color& color)
 	{
+		if (m_texture) SDL_DestroyTexture(m_texture);
+
 		SDL_Color c{ Color::toInt(color.r), Color::toInt(color.g), Color::toInt(color.b), Color::toInt(color.a) };
 		SDL_Surface* surface = TTF_RenderText_Solid(m_font->m_ttfFont, text.c_str(), c);
 		m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);

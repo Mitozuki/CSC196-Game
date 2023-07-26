@@ -20,6 +20,9 @@ bool SpaceGame::Initialize()
 	m_titleText = std::make_unique<kiko::Text>(m_font);
 	m_titleText->Create(kiko::g_renderer, "ASTEROIDS", kiko::Color{ 1, 1, 1, 1});
 
+	m_gameoverText = std::make_unique<kiko::Text>(m_font);
+	m_gameoverText->Create(kiko::g_renderer, "Game Over", kiko::Color{ 1, 1, 1, 1});
+
 	// load audio
 	kiko::g_audioSystem.AddAudio("jump", "Jump.wav");
 
@@ -52,9 +55,10 @@ void SpaceGame::Update(float dt)
 	case SpaceGame::eState::StartLevel:
 		m_scene->RemoveAll();
 	{
-		std::unique_ptr<Player> player = std::make_unique<Player>(200.0f, kiko::pi, kiko::Transform{ { 400, 300 }, 0, 3 }, kiko::g_manager.Get("star.txt"));
+		std::unique_ptr<Player> player = std::make_unique<Player>(10.0f, kiko::pi, kiko::Transform{ { 400, 300 }, 0, 3 }, kiko::g_manager.Get("star.txt"));
 		player->m_tag = "Player";
 		player->m_game = this;
+		player->SetDamping(0.9f);
 		m_scene->Add(std::move(player));
 	}
 	m_state = eState::Game;
@@ -70,11 +74,25 @@ void SpaceGame::Update(float dt)
 			m_scene->Add(std::move(enemy));
 		}
 		break;
-	case SpaceGame::eState::PlayerDead:
+	case SpaceGame::eState::PlayerDeadStart:
+		m_stateTimer = 3;
 		if (m_lives == 0) m_state = eState::GameOver;
-		else m_state = eState::StartLevel;
+		else m_state = eState::PlayerDead;
+		break;
+	case SpaceGame::eState::PlayerDead:
+		m_stateTimer -= dt;
+		if (m_stateTimer <= 0)
+		{
+			m_state = eState::StartLevel;
+		}
 		break;
 	case SpaceGame::eState::GameOver:
+		m_stateTimer -= dt;
+		if (m_stateTimer <= 0)
+		{
+			m_scene->RemoveAll();
+			m_state = eState::Title;
+		}
 		break;
 	default:
 		break;
@@ -89,6 +107,10 @@ void SpaceGame::Draw(kiko::Renderer& renderer)
 	if (m_state == eState::Title)
 	{
 		m_titleText->Draw(renderer, 400, 300);
+	}
+	if (m_state == eState::GameOver)
+	{
+		m_gameoverText->Draw(renderer, 400, 300);
 	}
 
 	m_scoreText->Draw(renderer, 40, 40);
