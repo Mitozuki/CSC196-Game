@@ -4,6 +4,7 @@
 #include "Framework/Scene.h"
 #include "Input/InputSystem.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/Emitter.h"
 
 void Player::Update(float dt)
 {

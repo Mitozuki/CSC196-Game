@@ -1,5 +1,6 @@
 #include "Emitter.h"
 #include "Particle.h"
+#include "ParticleSystem.h"
 
 namespace kiko
 {
@@ -30,6 +31,7 @@ namespace kiko
 
 	void kiko::Emitter::Draw(kiko::Renderer& renderer)
 	{
+
 	}
 	void Emitter::Emit()
 	{

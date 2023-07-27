@@ -1,6 +1,7 @@
 #include "Core/Core.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/ModelManager.h"
+#include "Renderer/ParticleSystem.h"
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
 #include "Framework/Scene.h"
@@ -98,6 +99,7 @@ int main(int argc, char* argv[])
 
 		//update
 		game->Update(kiko::g_time.GetDeltaTime());
+		kiko::g_particleSystem.Update(kiko::g_time.GetDeltaTime());
 		//draw
 
 
@@ -108,19 +110,6 @@ int main(int argc, char* argv[])
 		//if(inputSystem.GetKeyDown(SDL_SCANCODE_D)) direction.x = 1;
 
 		//position += direction * speed * kiko::g_time.GetDeltaTime();
-
-		if (kiko::g_inputSystem.GetMouseButtonDown(0))
-		{
-			cout << "left mouse pressed " << endl;
-		}
-		if (kiko::g_inputSystem.GetMouseButtonDown(1))
-		{
-			cout << "middle mouse pressed " << endl;
-		}
-		 if (kiko::g_inputSystem.GetMouseButtonDown(2))
-		{
-			cout << "right mouse pressed " << endl;
-		}
 
 		kiko::g_renderer.SetColor(0, 0, 0, 0);
 		kiko::g_renderer.BeginFrame();
@@ -139,6 +128,8 @@ int main(int argc, char* argv[])
 		{
 			kiko::g_audioSystem.PlayOneShot("jump");
 		}
+
+		kiko::g_particleSystem.Draw(kiko::g_renderer);
 
 		game->Draw(kiko::g_renderer);
 

@@ -3,6 +3,7 @@
 #include "Weapon.h"
 #include "SpaceGame.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/Emitter.h"
 #include "Framework/Scene.h"
 
 void Enemy::Update(float dt)
@@ -50,6 +51,23 @@ void Enemy::OnCollision(Actor* other)
 	{
 		m_game->AddScore(100);
 		m_destroyed = true;
+
+		kiko::EmitterData data;
+		data.burst = true;
+		data.burstCount = 100;
+		data.spawnRate = 200;
+		data.angle = 0;
+		data.angleRange = kiko::pi;
+		data.lifetimeMin = 0.5f;
+		data.lifetimeMin = 1.5f;
+		data.speedMin = 50;
+		data.speedMax = 250;
+		data.damping = 0.5f;
+		data.color = kiko::Color{ 1, 1, 0, 1 };
+		kiko::Transform transform{ m_transform.position, 0, 1 };
+		auto emitter = std::make_unique<kiko::Emitter>(transform, data);
+		emitter->m_lifespan = 1.0f;
+		m_scene->Add(std::move(emitter));
 	}
 }
 

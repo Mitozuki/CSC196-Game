@@ -4,7 +4,7 @@
 
 namespace kiko
 {
-	ParticleSystem g_particleSystem;
+	ParticleSystem g_particleSystem(1000);
 
 	void ParticleSystem::Update(float dt)
 	{
