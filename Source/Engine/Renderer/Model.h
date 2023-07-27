@@ -1,7 +1,7 @@
 #pragma once
-#include "Core/Core.h";
-#include "Renderer.h";
-#include <vector>;
+#include "Core/Core.h"
+#include "Renderer.h"
+#include <vector>
 
 namespace kiko
 {

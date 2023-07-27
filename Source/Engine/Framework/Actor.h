@@ -13,11 +13,16 @@ namespace kiko
 			m_transform{ transform },
 			m_model{ model }
 		{}
+		Actor(const kiko::Transform& transform) :
+			m_transform{ transform }
+		{}
+
 
 		virtual void Update(float dt);
 		virtual void Draw(kiko::Renderer& renderer);
 
-		float GetRadius() { return m_model->GetRadius() * m_transform.scale; }
+		//float GetRadius() { return (m_model) ? m_model->GetRadius() * m_transform.scale : 0; }
+		float GetRadius() { return (m_model) ? m_model->GetRadius() * m_transform.scale : -10000; }
 		virtual void OnCollision(Actor* other) {}
 
 		void AddForce(const vec2 force) { m_velocity += force; }

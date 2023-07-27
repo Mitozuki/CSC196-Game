@@ -9,6 +9,7 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Text.h"
 #include "Renderer/ModelManager.h"
+#include "Renderer/Emitter.h"
 
 bool SpaceGame::Initialize()
 {
@@ -73,11 +74,32 @@ void SpaceGame::Update(float dt)
 			enemy->m_game = this;
 			m_scene->Add(std::move(enemy));
 		}
+
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
+		{
+			kiko::EmitterData data;
+			data.burst = true;
+			data.burstCount = 100;
+			data.spawnRate = 200;
+			data.angle = 0;
+			data.angleRange = kiko::pi;
+			data.lifetimeMin = 0.5f;
+			data.lifetimeMin = 1.5f;
+			data.speedMin = 50;
+			data.speedMax = 250;
+			data.damping = 0.5f;
+			data.color = kiko::Color{ 1, 0, 0, 1 };
+			kiko::Transform transform{ { kiko::g_inputSystem.GetMousePosition() }, 0, 1 };
+			auto emitter = std::make_unique<kiko::Emitter>(transform, data);
+			emitter->m_lifespan = 1.0f;
+			m_scene->Add(std::move(emitter));
+		}
 		break;
 	case SpaceGame::eState::PlayerDeadStart:
 		m_stateTimer = 3;
 		if (m_lives == 0) m_state = eState::GameOver;
 		else m_state = eState::PlayerDead;
+
 		break;
 	case SpaceGame::eState::PlayerDead:
 		m_stateTimer -= dt;
