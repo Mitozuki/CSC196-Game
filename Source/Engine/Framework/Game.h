@@ -28,7 +28,7 @@ namespace kiko
 		std::unique_ptr<Scene> m_scene;
 		
 		int m_score = 0;
-		int m_lives = 0;
+		int m_lives = 1;
 
 	};
 }

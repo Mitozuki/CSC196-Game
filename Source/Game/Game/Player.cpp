@@ -5,6 +5,7 @@
 #include "Input/InputSystem.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Emitter.h"
+#include "Renderer/ModelManager.h"
 
 void Player::Update(float dt)
 {
@@ -29,17 +30,23 @@ void Player::Update(float dt)
 	{
 		kiko::Transform transform{ m_transform.position, m_transform.rotation, m_transform.scale };
 		//  + kiko::DegreesToRad(10.0f)
-		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>( 400.0f, transform, m_model );
+		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>( 400.0f, transform, kiko::g_manager.Get("bolt.txt"));
 		weapon->m_tag = "Player";
 		m_scene->Add(std::move(weapon));
-		
-		/*
+	}
+	if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_B) && !kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_B))
+	{
 		kiko::Transform transform{ m_transform.position, m_transform.rotation, m_transform.scale };
+		kiko::Transform transform1{ m_transform.position, m_transform.rotation + kiko::DegreesToRad(10.0f), m_transform.scale };
+		kiko::Transform transform2{ m_transform.position, m_transform.rotation - kiko::DegreesToRad(10.0f), m_transform.scale };
 		//  + kiko::DegreesToRad(10.0f)
-		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>( 400.0f, transform, m_model );
+		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>(400.0f, transform, kiko::g_manager.Get("bolt.txt"));
+		std::unique_ptr<Weapon> weapon1 = std::make_unique<Weapon>(400.0f, transform1, kiko::g_manager.Get("bolt.txt"));
+		std::unique_ptr<Weapon> weapon2 = std::make_unique<Weapon>(400.0f, transform2, kiko::g_manager.Get("bolt.txt"));
 		weapon->m_tag = "Player";
 		m_scene->Add(std::move(weapon));
-		*/
+		m_scene->Add(std::move(weapon1));
+		m_scene->Add(std::move(weapon2));
 	}
 
 	if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_T)) kiko::g_time.SetTimeScale(0.5f);

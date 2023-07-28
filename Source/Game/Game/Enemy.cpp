@@ -33,11 +33,29 @@ void Enemy::Update(float dt)
 	m_transform.position.y = kiko::Wrap(m_transform.position.y, (float)kiko::g_renderer.GetHeight());
 
 	m_fireTimer -= dt;
-	if (m_fireTimer <= 0 && shoot)
+	if (m_fireTimer <= 0 && shoot && m_type == Base)
 	{
 		kiko::Transform transform{ m_transform.position, m_transform.rotation, m_transform.scale };
 		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>(400.0f, transform, m_model);
 		m_scene->Add(std::move(weapon));
+
+		m_fireTimer = m_fireRate;
+	}
+
+	if (m_fireTimer <= 0 && shoot && m_type == Special)
+	{
+
+		kiko::Transform transform{ m_transform.position, m_transform.rotation, m_transform.scale };
+		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>(400.0f, transform, m_model);
+		m_scene->Add(std::move(weapon));
+
+		kiko::Transform transform1{ m_transform.position, m_transform.rotation + kiko::DegreesToRad(10.0f), m_transform.scale };
+		std::unique_ptr<Weapon> weapon2 = std::make_unique<Weapon>(400.0f, transform1, m_model);
+		m_scene->Add(std::move(weapon2));
+		
+		kiko::Transform transform2{ m_transform.position, m_transform.rotation - kiko::DegreesToRad(10.0f), m_transform.scale };
+		std::unique_ptr<Weapon> weapon3 = std::make_unique<Weapon>(400.0f, transform2, m_model);
+		m_scene->Add(std::move(weapon3));
 
 		m_fireTimer = m_fireRate;
 	}

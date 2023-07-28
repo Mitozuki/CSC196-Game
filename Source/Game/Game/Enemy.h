@@ -4,10 +4,27 @@
 class Enemy : public kiko::Actor
 {
 public:
+	enum Type
+	{
+		Base,
+		Special
+	};
+
+public:
 	Enemy(float speed, float turnRate, const kiko::Transform transform, std::shared_ptr<kiko::Model> model) :
 		Actor{ transform, model },
 		m_speed{ speed },
 		m_turnRate{ turnRate }
+	{
+		m_fireRate = 2.0f;
+		m_fireTimer = m_fireRate;
+	}
+	
+	Enemy(float speed, float turnRate, const kiko::Transform transform, std::shared_ptr<kiko::Model> model, Type type) :
+		Actor{ transform, model },
+		m_speed{ speed },
+		m_turnRate{ turnRate },
+		m_type{ Special }
 	{
 		m_fireRate = 2.0f;
 		m_fireTimer = m_fireRate;
@@ -22,4 +39,6 @@ private:
 
 	float m_fireRate = 0;
 	float m_fireTimer = 0;
+
+	Type m_type = Base;
 };

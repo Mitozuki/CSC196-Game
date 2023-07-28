@@ -60,6 +60,9 @@ int main(int argc, char* argv[])
 	kiko::g_audioSystem.Initialize();
 	kiko::g_inputSystem.Initialize();
 
+
+	kiko::g_audioSystem.AddAudio("mixkit-arcade-retro-background-219.wav", "background");
+
 	unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
 	game->Initialize();
 
@@ -85,6 +88,7 @@ int main(int argc, char* argv[])
 	
 
 	// main game loop
+	kiko::g_audioSystem.PlayOneShot("background", true);
 	bool quit = false;
 	while (!quit)
 	{
@@ -124,7 +128,7 @@ int main(int argc, char* argv[])
 			kiko::g_renderer.DrawPoint(star.m_pos.x, star.m_pos.y);
 		}
 
-		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) || kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_B))
 		{
 			kiko::g_audioSystem.PlayOneShot("jump");
 		}

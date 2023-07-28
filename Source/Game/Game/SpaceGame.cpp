@@ -16,7 +16,7 @@ bool SpaceGame::Initialize()
 	// create font / text objects
 	m_font = std::make_shared<kiko::Font>("Vendetta.ttf", 24);
 	m_scoreText = std::make_unique<kiko::Text>(m_font);
-	m_scoreText->Create(kiko::g_renderer, "SCORE 0000", kiko::Color{ 1, 0, 1, 1 });
+	m_scoreText->Create(kiko::g_renderer, "SCORE", kiko::Color{ 1, 1, 1, 1 });
 
 	m_titleText = std::make_unique<kiko::Text>(m_font);
 	m_titleText->Create(kiko::g_renderer, "ASTEROIDS", kiko::Color{ 1, 1, 1, 1});
@@ -56,7 +56,7 @@ void SpaceGame::Update(float dt)
 	case SpaceGame::eState::StartLevel:
 		m_scene->RemoveAll();
 	{
-		std::unique_ptr<Player> player = std::make_unique<Player>(10.0f, kiko::pi, kiko::Transform{ { 400, 300 }, 0, 3 }, kiko::g_manager.Get("star.txt"));
+		std::unique_ptr<Player> player = std::make_unique<Player>(10.0f, kiko::pi, kiko::Transform{ { 400, 300 }, 0, 3 }, kiko::g_manager.Get("ship.txt"));
 		player->m_tag = "Player";
 		player->m_game = this;
 		player->SetDamping(0.9f);
@@ -73,11 +73,18 @@ void SpaceGame::Update(float dt)
 			enemy->m_tag = "Enemy";
 			enemy->m_game = this;
 			m_scene->Add(std::move(enemy));
+			if (kiko::random(0, 9) == 0)
+			{
+				std::unique_ptr<Enemy> enemy2 = std::make_unique<Enemy>(kiko::randomf(5.0f, 15.0f), kiko::pi, kiko::Transform{ { kiko::random(800), kiko::random(600) }, kiko::randomf(kiko::twoPi), 3}, kiko::g_manager.Get("star.txt"), Enemy::Special);
+				enemy2->m_tag = "Enemy";
+				enemy2->m_game = this;
+				m_scene->Add(std::move(enemy2));
+			}
 		}
 		break;
 	case SpaceGame::eState::PlayerDeadStart:
 		m_stateTimer = 3;
-		if (m_lives == 0) m_state = eState::GameOver;
+		if (m_lives <= 0) m_state = eState::GameOver;
 		else m_state = eState::PlayerDead;
 
 		break;
@@ -100,7 +107,7 @@ void SpaceGame::Update(float dt)
 		break;
 	}
 
-	m_scoreText->Create(kiko::g_renderer, std::to_string(m_score), { 1, 1, 1, 1 });
+	m_scoreText->Create(kiko::g_renderer, "SCORE " + std::to_string(m_score), {1, 1, 1, 1});
 	m_scene->Update(dt);
 }
 
@@ -115,6 +122,6 @@ void SpaceGame::Draw(kiko::Renderer& renderer)
 		m_gameoverText->Draw(renderer, 400, 300);
 	}
 
-	m_scoreText->Draw(renderer, 40, 40);
+	m_scoreText->Draw(renderer, 100, 100);
 	m_scene->Draw(renderer);
 }
