@@ -11,7 +11,7 @@ namespace kiko
 	Font::~Font()
 	{
 		//<if m_ttfFont not null, close font(TTF_CloseFont)>
-		if (!m_ttfFont) TTF_CloseFont;
+		if (!m_ttfFont) TTF_CloseFont(m_ttfFont);
 	}
 	void Font::Load(const std::string& filename, int fontSize)
 	{
